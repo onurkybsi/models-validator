@@ -57,4 +57,9 @@ checkType = function (params) {
       };
     }
   }
+
+  return {
+    errorMessage: null,
+    isValid: true,
+  };
 };
