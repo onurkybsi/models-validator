@@ -1,8 +1,7 @@
-const model = require("./model");
+const modelValidator = require("./model-validator");
 
-let personModel = model.createModel("person");
-personModel.addProperty("firstName", "string", "required");
-personModel.addProperty("lastName", "string", "required");
-personModel.addProperty("age", "number", "required");
+let personModel = modelValidator.createModel("personModel");
+
+personModel.addProperty("age", "number", modelValidator.propertyRules.required);
 personModel.modelName = "test";
 console.log(personModel);

@@ -5,14 +5,17 @@ exports.validateAddProperty = function (
   properties
 ) {
   // Type checks
-  let typeCheckIsValid = checkType({
-    propertyName: "string",
-    propertyType: "string",
-  });
+  let typeCheckIsValid = checkType([
+    ["propertyName", propertyName, "string"],
+    ["propertyType", propertyType, "string"],
+    ["propertyRules", propertyRules, "array"],
+  ]);
 
-  if (!typeCheckIsValid) {
-    errorMessage = typeCheckIsValid.errorMessage;
-    isValid = typeCheckIsValid.isValid;
+  if (!typeCheckIsValid.isValid) {
+    return {
+      errorMessage: typeCheckIsValid.errorMessage,
+      isValid: typeCheckIsValid.isValid,
+    };
   }
 
   // If there is such a property, we throw an error. propertyName must be unique
@@ -51,17 +54,20 @@ exports.validateAddProperty = function (
 };
 
 checkType = function (params) {
-  for (const param in params) {
-    if (typeof param !== params[param]) {
-      return {
-        errorMessage: `${param} must be ${params[param]}`,
-        isValid: false,
-      };
-    }
-  }
-
-  return {
+  let result = {
     errorMessage: null,
     isValid: true,
   };
+
+  params.forEach((param) => {
+    if (param[2] === "array" && !Array.isArray(param[1])) {
+      result.errorMessage = `${param[0]} must be array!`;
+      result.isValid = false;
+    } else if (typeof param[1] !== param[2]) {
+      result.errorMessage = `${param[0]} must be ${param[2]}!`;
+      result.isValid = false;
+    }
+  });
+
+  return result;
 };
