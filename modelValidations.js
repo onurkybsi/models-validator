@@ -1,11 +1,9 @@
 exports.validateAddProperty = function (
   propertyName,
   propertyType,
-  propertyRules
+  propertyRules,
+  properties
 ) {
-  let errorMessage = null;
-  let isValid = true;
-
   // Type checks
   let typeCheckIsValid = checkType({
     propertyName: "string",
@@ -18,10 +16,12 @@ exports.validateAddProperty = function (
   }
 
   // If there is such a property, we throw an error. propertyName must be unique
-  for (const prop in this.properties) {
+  for (const prop in properties) {
     if (prop === propertyName) {
-      errorMessage = `${propertyName} is already exist!`;
-      isValid = false;
+      return {
+        errorMessage: `${propertyName} is already exist!`,
+        isValid: false,
+      };
     }
   }
 
@@ -38,13 +38,15 @@ exports.validateAddProperty = function (
   ];
 
   if (availableType.indexOf(propertyType) === -1) {
-    errorMessage = `${propertyType} is not one of the valid types!`;
-    isValid = false;
+    return {
+      errorMessage: `${propertyType} is not one of the valid types!`,
+      isValid: false,
+    };
   }
 
   return {
-    errorMessage: errorMessage,
-    isValid: isValid,
+    errorMessage: null,
+    isValid: true,
   };
 };
 

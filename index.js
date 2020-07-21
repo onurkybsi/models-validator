@@ -1,6 +1,8 @@
 const model = require("./model");
 
-let testModel = model.createModel();
-testModel.addProperty("firstName", "string", "required");
-
-console.log(testModel);
+let personModel = model.createModel("person");
+personModel.addProperty("firstName", "string", "required");
+personModel.addProperty("lastName", "string", "required");
+personModel.addProperty("age", "number", "required");
+personModel.modelName = "test";
+console.log(personModel);
