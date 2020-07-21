@@ -5,11 +5,11 @@ exports.validateAddProperty = function (
   properties
 ) {
   // Type checks
-  let typeCheckIsValid = checkType([
-    ["propertyName", propertyName, "string"],
-    ["propertyType", propertyType, "string"],
-    ["propertyRules", propertyRules, "array"],
-  ]);
+  let typeCheckIsValid = checkType({
+    propertyName: [propertyName, "string"],
+    propertyType: [propertyType, "string"],
+    propertyRules: [propertyRules, "array"],
+  });
 
   if (!typeCheckIsValid.isValid) {
     return {
@@ -59,16 +59,15 @@ checkType = function (params) {
     isValid: true,
   };
 
-  params.forEach((param) => {
-    if (param[2] === "array" && !Array.isArray(param[1])) {
-      result.errorMessage = `${param[0]} must be array!`;
+  for (param in params) {
+    if (params[param][1] === "array" && !Array.isArray(params[param][0])) {
+      result.errorMessage = `${param} must be array!`;
       result.isValid = false;
-    } 
-    else if (param[2] !== "array" && typeof param[1] !== param[2]) {
-      result.errorMessage = `${param[0]} must be ${param[2]}!`;
+    } else if (params[param][1] !== "array" && typeof params[param][0] !== params[param][1]) {
+      result.errorMessage = `${param} must be ${params[param][1]}!`;
       result.isValid = false;
     }
-  });
+  }
 
   return result;
 };
