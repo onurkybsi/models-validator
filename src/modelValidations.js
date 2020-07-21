@@ -40,7 +40,7 @@ exports.validateAddProperty = function (
     "object",
   ];
 
-  if (availableType.indexOf(propertyType) === -1) {
+  if (availableType.indexOf(propertyType.toLowerCase()) === -1) {
     return {
       errorMessage: `${propertyType} is not one of the valid types!`,
       isValid: false,
@@ -63,7 +63,8 @@ checkType = function (params) {
     if (param[2] === "array" && !Array.isArray(param[1])) {
       result.errorMessage = `${param[0]} must be array!`;
       result.isValid = false;
-    } else if (typeof param[1] !== param[2]) {
+    } 
+    else if (param[2] !== "array" && typeof param[1] !== param[2]) {
       result.errorMessage = `${param[0]} must be ${param[2]}!`;
       result.isValid = false;
     }
