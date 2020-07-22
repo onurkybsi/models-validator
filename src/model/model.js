@@ -1,4 +1,4 @@
-const modelValidations = require("./modelValidations");
+const modelValidations = require("./modelMethodsValidations");
 
 let modelRepo = {};
 
@@ -35,7 +35,16 @@ ModelManager.prototype.addProperty = function (
     },
   };
 };
+
+ModelManager.prototype.validate = function (
+  object,
+  modelName,
+  completelyValidation
+) {
+  let model = modelRepo[modelName];
+};
 //#endregion
+
 
 exports.createModel = function (modelName) {
   modelRepo = {

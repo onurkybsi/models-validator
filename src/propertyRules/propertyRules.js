@@ -1,4 +1,4 @@
-const generalRules = require("./propertyRulesImp/generalRules");
+const generalRules = require("./propertyRules/generalRules");
 
 const propertyRules = {
   generalRules: generalRules.instance,
