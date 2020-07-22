@@ -1,3 +1,7 @@
-const required = "required";
+const PropertyRules = function () {
+  this.required = "required";
+};
 
-module.exports = { required };
+const propertyRules = new PropertyRules();
+Object.freeze(propertyRules);
+module.exports = { propertyRules };
