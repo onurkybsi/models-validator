@@ -70,6 +70,7 @@ checkType = function (params) {
       Array.isArray(params[param][0])
     ) {
       params[param][0].forEach((rule) => {
+<<<<<<< HEAD
         result.errorMessage = `${rule} rule is not possible.Must be one of the 'propertyRules'!`;
         result.isValid = false;
 
@@ -81,6 +82,11 @@ checkType = function (params) {
         }
 
         if (!result.isValid) return;
+=======
+        if (!propertyRules.hasOwnProperty(rule))
+          result.errorMessage = `${rule} rule is not possible.Must be one of the 'propertyRules'!`;
+        result.isValid = false;
+>>>>>>> c5d383e81a8076bbfc258f74cea56cdc6d142289
       });
     } else if (
       params[param][1] !== "array" &&
