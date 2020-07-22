@@ -1,3 +1,5 @@
+// In this module, the public methods of the model module have been validated.
+
 const propertyRules = require("./propertyRules");
 
 exports.validateAddProperty = function (

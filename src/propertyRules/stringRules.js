@@ -1,0 +1,1 @@
+// Rules are implemented for string type properties in this module.

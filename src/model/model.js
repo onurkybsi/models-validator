@@ -1,8 +1,10 @@
+// Creating and managing "models" are covered.
+
 const modelValidations = require("./modelMethodsValidations");
 
 let modelRepo = {};
 
-//#region ModelManager
+//#region ModelManager: It gives models indirect access.
 function ModelManager(modelName) {
   this.modelName = modelName;
 }

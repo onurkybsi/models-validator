@@ -1,3 +1,5 @@
+// Property type independent rules are implemented in this module.
+
 const GeneralRules = function () {
   this.required = "required";
 };
