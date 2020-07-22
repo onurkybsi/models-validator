@@ -1,3 +1,8 @@
-const required = "required";
+const generalRules = require("./propertyRulesImp/generalRules");
 
-module.exports = { required };
+const propertyRules = {
+  generalRules: generalRules.instance,
+};
+Object.freeze(propertyRules);
+
+module.exports = propertyRules;

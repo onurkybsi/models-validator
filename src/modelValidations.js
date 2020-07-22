@@ -1,3 +1,5 @@
+const propertyRules = require("./propertyRules");
+
 exports.validateAddProperty = function (
   propertyName,
   propertyType,
@@ -63,10 +65,32 @@ checkType = function (params) {
     if (params[param][1] === "array" && !Array.isArray(params[param][0])) {
       result.errorMessage = `${param} must be array!`;
       result.isValid = false;
-    } else if (params[param][1] !== "array" && typeof params[param][0] !== params[param][1]) {
+    } else if (
+      params[param][1] === "array" &&
+      Array.isArray(params[param][0])
+    ) {
+      params[param][0].forEach((rule) => {
+        result.errorMessage = `${rule} rule is not possible.Must be one of the 'propertyRules'!`;
+        result.isValid = false;
+
+        for (rules in propertyRules) {
+          if (propertyRules[rules].hasOwnProperty(rule)) {
+            result.errorMessage = null;
+            result.isValid = true;
+          }
+        }
+
+        if (!result.isValid) return;
+      });
+    } else if (
+      params[param][1] !== "array" &&
+      typeof params[param][0] !== params[param][1]
+    ) {
       result.errorMessage = `${param} must be ${params[param][1]}!`;
       result.isValid = false;
     }
+
+    if (!result.isValid) break;
   }
 
   return result;

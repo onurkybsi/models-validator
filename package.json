@@ -4,11 +4,12 @@
   "description": "Provides model validation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "OnurKayabasi",
   "license": "ISC",
-  "dependencies": {
-    "jest": "^26.1.0"
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^25.5.4"
   }
 }
