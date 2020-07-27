@@ -1,6 +1,6 @@
 // In this module, the public methods of the model module have been validated.
 
-const propertyRules = require("./propertyRules");
+const propertyRules = require("../validation/propertyValidation/propertyValidation").propertyRules;
 
 exports.validateAddProperty = function (
   propertyName,

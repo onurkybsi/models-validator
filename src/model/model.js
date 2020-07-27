@@ -1,6 +1,7 @@
 // Creating and managing "models" are covered.
 
 const modelValidations = require("./modelMethodsValidations");
+const validation = require("../validation/validation");
 
 let modelRepo = {};
 
@@ -38,22 +39,20 @@ ModelManager.prototype.addProperty = function (
   };
 };
 
-ModelManager.prototype.validate = function (
-  object,
-  modelName,
-  completelyValidation
-) {
-  let model = modelRepo[modelName];
+ModelManager.prototype.validate = function (object, additionalContent = true, caseSensitive = false) {
+  let model = modelRepo[this.modelName];
+
+  let result = validation.validate(object, model, additionalContent, caseSensitive);
+
+  return result;
 };
 //#endregion
-
 
 exports.createModel = function (modelName) {
   modelRepo = {
     ...modelRepo,
     [modelName]: {
       properties: {},
-      isValid: false,
     },
   };
 
