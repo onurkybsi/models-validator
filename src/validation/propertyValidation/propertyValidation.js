@@ -8,7 +8,7 @@ const propertyRules = {
 Object.freeze(propertyRules);
 
 const propertyRulesImp = {
-  requiredImp: generalValidation.impInstance,
+  requiredImp: generalValidation.impInstance.requiredImp,
 };
 Object.freeze(propertyRulesImp);
 

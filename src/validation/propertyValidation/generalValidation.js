@@ -8,14 +8,14 @@ const rulesInstance = new GeneralRules();
 Object.freeze(rulesInstance);
 
 const GeneralRulesImp = function () {
-  this.requiredImp = requiredImp = function (object, model) {
+  this.requiredImp = function (object, model) {
     let result = {
       errorMessage: "",
       isValid: true,
     };
 
-    for (modelProp in model) {
-      if (!object.hasOwnProperty(modelProp)) {
+    for (modelProp in model.properties) {
+      if (model.properties[modelProp].rules.indexOf(rulesInstance.required) !== -1 && !object.hasOwnProperty(modelProp)) {
         result.errorMessage = `${modelProp} is required!`;
         result.isValid = false;
         break;

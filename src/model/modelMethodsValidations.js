@@ -1,6 +1,7 @@
 // In this module, the public methods of the model module have been validated.
 
-const propertyRules = require("../validation/propertyValidation/propertyValidation").propertyRules;
+const propertyRules = require("../validation/propertyValidation/propertyValidation")
+  .propertyRules;
 
 exports.validateAddProperty = function (
   propertyName,
@@ -42,6 +43,7 @@ exports.validateAddProperty = function (
     "symbol",
     "function",
     "object",
+    "array",
   ];
 
   if (availableType.indexOf(propertyType.toLowerCase()) === -1) {
