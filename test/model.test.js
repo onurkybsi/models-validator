@@ -2,6 +2,9 @@ const model = require("../src/model/model");
 const {
   rulesInstance,
 } = require("../src/validation/propertyValidation/generalValidation");
+const {
+  propertyRules,
+} = require("../src/validation/propertyValidation/propertyValidation");
 
 //#region Fake ModelManager
 function ModelManager(modelName) {
@@ -113,7 +116,7 @@ test("addProperty_Should_NotThrownExpection_ForStringTypeAndValue_PropertyTypeIn
   ).not.toThrow(Error("propertyType must be string!"));
 });
 
-test("addProperty_Should_ThrownExpection_ForUnexpectedValue_PropertyTypeValueInput", () => {
+test("addProperty_Should_ThrownExpection_ForUnexpectedValue_PropertyTypeInput", () => {
   let testModel = model.createModel("test");
 
   let callAddProperty = () =>
@@ -143,7 +146,7 @@ test("addProperty_Should_ThrownExpection_ForNumberType_PropertyRulesInput", () =
   expect(callAddProperty).toThrow(Error);
 });
 
-test("addProperty_Should_ThrownExpection_ForObjectType_PropertyNameRules", () => {
+test("addProperty_Should_ThrownExpection_ForObjectType_PropertyRulesInput", () => {
   let testModel = model.createModel("test");
 
   let callAddProperty = () =>
@@ -152,12 +155,26 @@ test("addProperty_Should_ThrownExpection_ForObjectType_PropertyNameRules", () =>
   expect(callAddProperty).toThrow(Error);
 });
 
-test("addProperty_Should_ThrownExpection_ForBooleanType_PropertyNameRules", () => {
+test("addProperty_Should_ThrownExpection_ForBooleanType_PropertyRulesInput", () => {
   let testModel = model.createModel("test");
 
   let callAddProperty = () =>
     testModel.addProperty("propertyName", "string", false);
 
   expect(callAddProperty).toThrow(Error);
+});
+
+test("addProperty_Should_ThrownExpection_ForExisting_PropertyNameInput", () => {
+  let testModel = model.createModel("test");
+  testModel.addProperty("propertyName", "string", [
+    propertyRules.generalRules.required,
+  ]);
+
+  let callAddProperty = () =>
+    testModel.addProperty("propertyName", "string", [
+      propertyRules.generalRules.required,
+    ]);
+
+  expect(callAddProperty).toThrow(Error(`propertyName is already exist!`));
 });
 //#endregion
