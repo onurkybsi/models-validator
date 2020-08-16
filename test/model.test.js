@@ -177,4 +177,33 @@ test("addProperty_Should_ThrownExpection_ForExisting_PropertyNameInput", () => {
 
   expect(callAddProperty).toThrow(Error(`propertyName is already exist!`));
 });
+
+//#endregion
+
+//#region validate(object, additionalContent = true, caseSensitive = false) tests
+
+test("validate_WhenAdditionalContentFalse_ShouldErrorMessageReceived", () => {
+  
+  // Arrange
+  let testModel = model.createModel("test");
+
+  testModel.addProperty("propertyName", "string", [rulesInstance.required]);
+
+  let targetObj = {
+    propertyName: "test",
+    secondProp: "additional",
+  };
+
+  let expectedResult = {
+    errorMessage: "The object contains unwanted content!",
+    isValid: false,
+  };
+
+  // Act
+  let actualResult = testModel.validate(targetObj, false);
+
+  // Assert
+  expect(actualResult).toEqual(expectedResult);
+});
+
 //#endregion
