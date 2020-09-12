@@ -1,28 +1,16 @@
 const modelValidator = require("./model-validator");
 
 let personModel = modelValidator.createModel("personModel");
-let productModel = modelValidator.createModel("productModel");
 
-personModel.addProperty("firstName", "string", [
-  modelValidator.propertyRules.generalRules.required,
-]);
-personModel.addProperty("lastName", "string", [
-  modelValidator.propertyRules.generalRules.required,
-]);
-personModel.addProperty("age", "array", [
-  modelValidator.propertyRules.generalRules.required,
-]);
-
-productModel.addProperty("name", "string", [
-  modelValidator.propertyRules.generalRules.required,
-]);
+personModel.addProperty("firstName", "string");
+personModel.addProperty("lastName", "string");
+personModel.addProperty("age", "array");
 
 let targetObj = {
-  firstName: "Onur",
+  firstName: "onur",
   lastName: "4",
-  age: [],
 };
 
-let result = personModel.validate(targetObj, false, false);
+let result = personModel.validate(targetObj, true, false);
 
 console.log(result);

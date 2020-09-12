@@ -10,17 +10,12 @@ function ModelManager(modelName) {
   this.modelName = modelName;
 }
 
-ModelManager.prototype.addProperty = function (
-  propertyName,
-  propertyType,
-  propertyRules
-) {
+ModelManager.prototype.addProperty = function (propertyName, propertyType) {
   let existingProps = modelRepo[this.modelName]["properties"];
 
   let parametersIsValid = modelValidations.validateAddProperty(
     propertyName,
     propertyType,
-    propertyRules,
     existingProps
   );
   if (!parametersIsValid.isValid) {
@@ -33,16 +28,24 @@ ModelManager.prototype.addProperty = function (
       ...modelRepo[this.modelName].properties,
       [propertyName]: {
         type: propertyType,
-        rules: propertyRules,
       },
     },
   };
 };
 
-ModelManager.prototype.validate = function (object, additionalContent = true, caseSensitive = false) {
+ModelManager.prototype.validate = function (
+  object,
+  additionalContent = true,
+  caseSensitive = false
+) {
   let model = modelRepo[this.modelName];
 
-  let result = validation.validate(object, model, additionalContent, caseSensitive);
+  let result = validation.validate(
+    object,
+    model,
+    additionalContent,
+    caseSensitive
+  );
 
   return result;
 };

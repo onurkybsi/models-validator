@@ -1,5 +1,4 @@
 const modelValidation = require("./modelValidation/modelValidation");
-const propertyValidation = require("./propertyValidation/propertyValidation");
 const typeValidation = require("./typeValidation");
 
 exports.validate = (object, model, additionalContent, caseSensitive) => {
@@ -14,9 +13,6 @@ exports.validate = (object, model, additionalContent, caseSensitive) => {
       model,
       caseSensitive
     );
-  if (!result.isValid) return result;
-
-  result = propertyValidation.propertyRulesImp.requiredImp(object, model);
   if (!result.isValid) return result;
 
   result = typeValidation.checkPropType(object, model);

@@ -1,4 +1,4 @@
-checkPropType = function (object, model) {
+const checkPropType = function (object, model) {
   let result = {
     errorMessage: "",
     isValid: true,

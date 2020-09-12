@@ -1,5 +1,5 @@
 // Properties other than those in the model are not accepted.
-checkAdditionalContent = (object, model, caseSensitive) => {
+const checkAdditionalContent = (object, model, caseSensitive) => {
   let modelProps = Object.keys(model.properties);
   let objectProps = Object.keys(object);
 
