@@ -13,7 +13,7 @@ const checkRequiredContent = (object, model, caseSensitive) => {
     // This operation was done to ensure that
     // the error message is exactly the same as the property name
     // regardless of case sensitivity.
-    Object.keys(model.properties).filter((p) =>
+    Object.keys(model).filter((p) =>
       missingPropsInObject.includes(caseSensitive ? p : p.toLowerCase())
     )
   );
@@ -40,8 +40,8 @@ const checkAdditionalContent = (object, model, caseSensitive) => {
 const resolveCaseSensivityForValidations = (object, model, caseSensitive) => {
   return {
     modelProps: caseSensitive
-      ? Object.keys(model.properties)
-      : Object.keys(model.properties).map((p) => p.toLowerCase()),
+      ? Object.keys(model)
+      : Object.keys(model).map((p) => p.toLowerCase()),
     objectProps: caseSensitive
       ? Object.keys(object)
       : Object.keys(object).map((p) => p.toLowerCase()),

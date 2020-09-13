@@ -5,11 +5,11 @@ const checkPropType = function (object, model) {
     isValid: true,
   };
 
-  let modelProps = Object.keys(model.properties);
+  let modelProps = Object.keys(model);
   let modelPropsLowerCase = modelProps.map((p) => p.toLowerCase());
   let modelTypes = [];
   modelProps.forEach(function (prop) {
-    modelTypes.push(model.properties[prop].type);
+    modelTypes.push(model[prop]);
   });
 
   let objectProps = Object.keys(object);
