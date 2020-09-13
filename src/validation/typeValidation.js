@@ -15,10 +15,8 @@ const checkPropType = function (object, model) {
   let objectPropsLowerCase = objectProps.map((p) => p.toLowerCase());
   let objectTypes = [];
   objectProps.forEach(function (prop) {
-    if(Array.isArray(object[prop]))
-        objectTypes.push("array");
-    else
-        objectTypes.push(typeof object[prop]);
+    if (Array.isArray(object[prop])) objectTypes.push("array");
+    else objectTypes.push(typeof object[prop]);
   });
 
   modelPropsLowerCase.forEach(function (prop, index) {

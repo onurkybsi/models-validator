@@ -2,21 +2,27 @@ const modelValidation = require("./modelValidation/modelValidation");
 const typeValidation = require("./typeValidation");
 
 exports.validate = (object, model, additionalContent, caseSensitive) => {
-  let result = {
-    errorMessage: "",
-    isValid: true,
-  };
+  let resultOfRequiredContentCheck = modelValidation.checkRequiredContent(
+    object,
+    model,
+    caseSensitive
+  );
 
-  if (!additionalContent)
-    result = modelValidation.checkAdditionalContent(
+  if (!resultOfRequiredContentCheck.isValid)
+    return resultOfRequiredContentCheck;
+
+  if (!additionalContent) {
+    let resultOfAdditionalContentCheck = modelValidation.checkAdditionalContent(
       object,
       model,
       caseSensitive
     );
-  if (!result.isValid) return result;
 
-  result = typeValidation.checkPropType(object, model);
-  if (!result.isValid) return result;
+    if (!resultOfAdditionalContentCheck.isValid)
+      return resultOfAdditionalContentCheck;
+  }
 
-  return result;
+  let resultOfTPropTypeCheck = typeValidation.checkPropType(object, model);
+
+  return resultOfTPropTypeCheck;
 };

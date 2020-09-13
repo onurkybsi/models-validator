@@ -1,53 +1,79 @@
-// Properties other than those in the model are not accepted.
+const checkRequiredContent = (object, model, caseSensitive) => {
+  let props = resolveCaseSensitiveState(object, model, caseSensitive);
+
+  let missingPropsInObject = detectMissingContent(
+    props.modelProps,
+    props.objectProps
+  );
+
+  return prepareResult(
+    missingPropsInObject.length > 0,
+    true,
+    missingPropsInObject
+  );
+};
+
 const checkAdditionalContent = (object, model, caseSensitive) => {
-  let modelProps = Object.keys(model.properties);
-  let objectProps = Object.keys(object);
+  let props = resolveCaseSensitiveState(object, model, caseSensitive);
 
-  if (objectProps.length > modelProps.length)
-    return {
-      errorMessage: "The object contains unwanted content!",
-      isValid: false,
-    };
+  let additionalPropsInObject = detectMissingContent(
+    props.objectProps,
+    props.modelProps
+  );
 
-  let unacceptablePropCheckResult = {
-    errorMessage: "",
-    isValid: true,
-  };
+  return prepareResult(
+    additionalPropsInObject.length > 0,
+    false,
+    additionalPropsInObject
+  );
+};
 
-  if (caseSensitive) {
-    objectProps.every((prop) => {
-      if (modelProps.indexOf(prop) === -1) {
-        unacceptablePropCheckResult.errorMessage = `${prop} property is not acceptable!`;
-        unacceptablePropCheckResult.isValid = false;
-
-        return false;
-      }
-
-      return true;
-    });
-  } else {
-    var notCaseSensitiveModelKeys = modelProps.map((p) => p.toLowerCase());
-
-    objectProps.every((prop) => {
-      if (notCaseSensitiveModelKeys.indexOf(prop.toLowerCase()) === -1) {
-        unacceptablePropCheckResult.errorMessage = `${prop} property is not acceptable!`;
-        unacceptablePropCheckResult.isValid = false;
-
-        return false;
-      }
-
-      return true;
-    });
-  }
-
-  if (!unacceptablePropCheckResult.isValid) return unacceptablePropCheckResult;
-
+const resolveCaseSensitiveState = (object, model, caseSensitive) => {
   return {
-    errorMessage: "",
-    isValid: true,
+    modelProps: caseSensitive
+      ? Object.keys(model.properties)
+      : Object.keys(model.properties).map((p) => p.toLowerCase()),
+    objectProps: caseSensitive
+      ? Object.keys(object)
+      : Object.keys(object).map((p) => p.toLowerCase()),
   };
 };
 
+const detectMissingContent = (baseArray, checkedArray) => {
+  let missingContent = [];
+
+  baseArray.forEach((prop) => {
+    if (!checkedArray.includes(prop)) {
+      missingContent.push(prop);
+    }
+  });
+
+  return missingContent;
+};
+
+const prepareResult = (isErrorResult, isMissingErrorResult, dataWithErrors) => {
+  let result = {
+    errorMessage: "",
+    isValid: true,
+  };
+
+  if (!isErrorResult) return result;
+  else {
+    result.errorMessage = isMissingErrorResult
+      ? "These properties are missing :"
+      : "These properties are unwanted :";
+
+    dataWithErrors.forEach((data) => {
+      result.errorMessage += ` ${data},`;
+    });
+
+    result.errorMessage = result.errorMessage.slice(0, -1);
+
+    return result;
+  }
+};
+
 module.exports = {
+  checkRequiredContent,
   checkAdditionalContent,
 };
