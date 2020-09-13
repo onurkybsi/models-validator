@@ -1,34 +1,43 @@
+// It validates the required properties.
 const checkRequiredContent = (object, model, caseSensitive) => {
-  let props = resolveCaseSensitiveState(object, model, caseSensitive);
+  let props = resolveCaseSensivityForValidations(object, model, caseSensitive);
 
-  let missingPropsInObject = detectMissingContent(
+  let missingPropsInObject = identifyMissingElements(
     props.modelProps,
     props.objectProps
   );
 
-  return prepareResult(
+  return prepareContentValidationsResult(
     missingPropsInObject.length > 0,
     true,
-    missingPropsInObject
+    // This operation was done to ensure that
+    // the error message is exactly the same as the property name
+    // regardless of case sensitivity.
+    Object.keys(model.properties).filter((p) =>
+      missingPropsInObject.includes(caseSensitive ? p : p.toLowerCase())
+    )
   );
 };
 
+// If additional content is not allowed,
+// it validate that there is no additional content.
 const checkAdditionalContent = (object, model, caseSensitive) => {
-  let props = resolveCaseSensitiveState(object, model, caseSensitive);
+  let props = resolveCaseSensivityForValidations(object, model, caseSensitive);
 
-  let additionalPropsInObject = detectMissingContent(
+  let additionalPropsInObject = identifyMissingElements(
     props.objectProps,
     props.modelProps
   );
 
-  return prepareResult(
+  return prepareContentValidationsResult(
     additionalPropsInObject.length > 0,
     false,
     additionalPropsInObject
   );
 };
 
-const resolveCaseSensitiveState = (object, model, caseSensitive) => {
+// Returns the property names to be used in validations according to case sensitivity.
+const resolveCaseSensivityForValidations = (object, model, caseSensitive) => {
   return {
     modelProps: caseSensitive
       ? Object.keys(model.properties)
@@ -39,7 +48,8 @@ const resolveCaseSensitiveState = (object, model, caseSensitive) => {
   };
 };
 
-const detectMissingContent = (baseArray, checkedArray) => {
+// Identify missing elements in another array based on an array.
+const identifyMissingElements = (baseArray, checkedArray) => {
   let missingContent = [];
 
   baseArray.forEach((prop) => {
@@ -51,7 +61,12 @@ const detectMissingContent = (baseArray, checkedArray) => {
   return missingContent;
 };
 
-const prepareResult = (isErrorResult, isMissingErrorResult, dataWithErrors) => {
+// Prepares the return object of content validations.
+const prepareContentValidationsResult = (
+  isErrorResult,
+  isMissingErrorResult,
+  dataWithErrors
+) => {
   let result = {
     errorMessage: "",
     isValid: true,
@@ -59,6 +74,8 @@ const prepareResult = (isErrorResult, isMissingErrorResult, dataWithErrors) => {
 
   if (!isErrorResult) return result;
   else {
+    result.isValid = false;
+
     result.errorMessage = isMissingErrorResult
       ? "These properties are missing :"
       : "These properties are unwanted :";

@@ -5,7 +5,7 @@ exports.validateAddProperty = function (
   properties
 ) {
   // Type checks
-  let typeCheckIsValid = checkType({
+  let typeCheckIsValid = checkTypeOfParams({
     propertyName: [propertyName, "string"],
     propertyType: [propertyType, "string"],
   });
@@ -53,7 +53,7 @@ exports.validateAddProperty = function (
   };
 };
 
-const checkType = function (params) {
+const checkTypeOfParams = function (params) {
   let result = {
     errorMessage: null,
     isValid: true,

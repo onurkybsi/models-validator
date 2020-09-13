@@ -1,3 +1,4 @@
+// Validates the data types of the properties of the validated object.
 const checkPropType = function (object, model) {
   let result = {
     errorMessage: "",

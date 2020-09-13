@@ -1,5 +1,5 @@
-const modelValidation = require("./modelValidation/modelValidation");
-const typeValidation = require("./typeValidation");
+const modelValidation = require("./validations/contentValidation");
+const typeValidation = require("./validations/typeValidation");
 
 exports.validate = (object, model, additionalContent, caseSensitive) => {
   let resultOfRequiredContentCheck = modelValidation.checkRequiredContent(
