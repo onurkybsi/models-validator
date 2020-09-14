@@ -1,6 +1,5 @@
 // Creating and managing "models" are covered.
 
-const modelValidations = require("./modelMethodsValidations");
 const validation = require("../validation/validation");
 
 let modelRepo = {};
@@ -39,6 +38,6 @@ exports.createModel = function (modelName, model) {
     Object.freeze(newModelManager);
     return newModelManager;
   } else {
-    return Error("The model parameter must be an object!");
+    throw Error("The 'model' parameter of createModel(modelName, model) must be an object!");
   }
 };

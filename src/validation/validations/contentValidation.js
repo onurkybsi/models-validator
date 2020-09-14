@@ -32,7 +32,9 @@ const checkAdditionalContent = (object, model, caseSensitive) => {
   return prepareContentValidationsResult(
     additionalPropsInObject.length > 0,
     false,
-    additionalPropsInObject
+    Object.keys(object).filter((p) =>
+      additionalPropsInObject.includes(caseSensitive ? p : p.toLowerCase())
+    )
   );
 };
 
