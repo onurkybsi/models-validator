@@ -64,10 +64,10 @@ const validateCreateModelParameters = (modelName, model) => {
 };
 
 const validateVariableType = (variable, expectedType) => {
-  if (expectedType[0] === "array") return Array.isArray(variable);
-  else if (expectedType[0] === "object")
+  if (expectedType === "array") return Array.isArray(variable);
+  else if (expectedType === "object")
     return typeof variable === "object" && !Array.isArray(variable);
-  else return typeof variable === expectedType[0];
+  else return typeof variable === expectedType;
 };
 
 const validateModelObj = (obj) => {
