@@ -27,8 +27,39 @@ ModelManager.prototype.validate = function (
 };
 //#endregion
 
+//#region Validation of model parameter of createModel
+
+// Invoke void validation methods that throw runtime errors
+const validateModelObj = (obj) => {
+  validatePropsTypes(obj);
+};
+
+const validatePropsTypes = (obj) => {
+  const availableType = [
+    "undefined",
+    "object",
+    "boolean",
+    "number",
+    "bigint",
+    "string",
+    "symbol",
+    "function",
+    "object",
+    "array",
+  ];
+
+  for (const prop in obj) {
+    if (!availableType.includes(obj[prop])) {
+      throw Error(`${obj[prop]} is not of the available types!`);
+    }
+  }
+};
+//#endregion
+
 exports.createModel = function (modelName, model) {
   if (typeof model === "object" && !Array.isArray(model)) {
+    validateModelObj(model);
+
     modelRepo = {
       ...modelRepo,
       [modelName]: model,
@@ -38,6 +69,8 @@ exports.createModel = function (modelName, model) {
     Object.freeze(newModelManager);
     return newModelManager;
   } else {
-    throw Error("The 'model' parameter of createModel(modelName, model) must be an object!");
+    throw Error(
+      "The 'model' parameter of createModel(modelName, model) must be an object!"
+    );
   }
 };
