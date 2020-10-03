@@ -6,7 +6,12 @@ let personModel = modelValidator.createModel("personModel", {
   age: "number",
 });
 
-let validationResult = personModel.validate(
+let carModel = modelValidator.createModel("carModel", {
+  brand: "string",
+  modelYear: "number",
+});
+
+let validationResult1 = personModel.validate(
   {
     firstName: "Onur",
     lastName: "Kayabasi",
@@ -16,4 +21,16 @@ let validationResult = personModel.validate(
   true
 );
 
-console.log(validationResult);
+let validationResult2 = carModel.validate(
+  {
+    brand: "VW",
+    modelYear: 2020,
+  },
+  false,
+  true
+);
+
+console.log(validationResult1);
+console.log(personModel.modelName);
+console.log(validationResult2);
+console.log(carModel.modelName);

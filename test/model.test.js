@@ -1,209 +1,109 @@
 const model = require("../src/model/model");
-const {
-  rulesInstance,
-} = require("../src/validation/propertyValidation/generalValidation");
-const {
-  propertyRules,
-} = require("../src/validation/propertyValidation/propertyValidation");
+const someModel = {
+  someProp: "string",
+};
 
-//#region Fake ModelManager
-function ModelManager(modelName) {
-  this.modelName = modelName;
-}
+//#region createModel(modelName, model) tests
+test("createModel_Throw_Error_When_modelName_Type_IsNot_String", () => {
+  let callCreateModel = () => model.createModel(1, someModel);
 
-ModelManager.prototype.addProperty = function (
-  propertyName,
-  propertyType,
-  propertyRules
-) {};
-//#endregion
-
-//#region createModel(modelName) tests
-test("createModel_Is_modelName_Entered", () => {
-  let personModel = model.createModel("person");
-
-  expect(personModel.modelName).toBe("person");
-});
-
-test("createModel_Is_ReturnType_ModelManager", () => {
-  let actualReturn = model.createModel("person");
-
-  let expectedReturn = new ModelManager("person");
-
-  expect(actualReturn).toMatchObject(expectedReturn);
-});
-
-test("createModel_Is_ModelManager_Frozen", () => {
-  let personModel = model.createModel("person");
-
-  personModel.modelName = "test";
-
-  expect(personModel.modelName).toBe("person");
-});
-//#endregion
-
-//#region addProperty(propertyName, propertyType, propertyRules)
-
-test("addProperty_Should_ThrownExpection_ForNumberType_PropertyNameInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty(0, "string", [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error);
-});
-
-test("addProperty_Should_ThrownExpection_ForObjectType_PropertyNameInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty({}, "string", [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error);
-});
-
-test("addProperty_Should_ThrownExpection_ForBooleanType_PropertyNameInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty(false, "string", [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error);
-});
-
-test("addProperty_Should_NotThrownExpection_ForString_PropertyNameInput", () => {
-  let testModel = model.createModel("test");
-
-  expect(() =>
-    testModel.addProperty("noException", "string", [rulesInstance.required])
-  ).not.toThrow(Error);
-});
-
-test("addProperty_Should_ThrownExpection_ForNumberType_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", 0, [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error("propertyType must be string!"));
-});
-
-test("addProperty_Should_ThrownExpection_ForObjectType_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", {}, [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error("propertyType must be string!"));
-});
-
-test("addProperty_Should_ThrownExpection_ForBooleanType_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", false, [rulesInstance.required]);
-
-  expect(callAddProperty).toThrow(Error("propertyType must be string!"));
-});
-
-test("addProperty_Should_NotThrownExpection_ForStringTypeAndValue_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
-
-  expect(() =>
-    testModel.addProperty("propertyName", "unexpectedValue", [
-      rulesInstance.required,
-    ])
-  ).not.toThrow(Error("propertyType must be string!"));
-});
-
-test("addProperty_Should_ThrownExpection_ForUnexpectedValue_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
-
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", "unexpectedValue", [
-      rulesInstance.required,
-    ]);
-
-  expect(callAddProperty).toThrow(
-    Error("unexpectedValue is not one of the valid types!")
+  expect(callCreateModel).toThrow(
+    Error(
+      "The 'modelName' parameter of createModel(modelName, model) must be an string!"
+    )
   );
 });
 
-test("addProperty_Should_NotThrownExpection_ForStringTypeAndValue_PropertyTypeInput", () => {
-  let testModel = model.createModel("test");
+test("createModel_Not_Throw_Error_When_modelName_Type_Is_String", () => {
+  let callCreateModel = () => model.createModel("testModel", someModel);
 
-  expect(() =>
-    testModel.addProperty("propertyName", "string", [rulesInstance.required])
-  ).not.toThrow(Error);
+  expect(callCreateModel).not.toThrow(
+    Error(
+      "The 'modelName' parameter of createModel(modelName, model) must be an string!"
+    )
+  );
 });
 
-test("addProperty_Should_ThrownExpection_ForNumberType_PropertyRulesInput", () => {
-  let testModel = model.createModel("test");
+test("createModel_Throw_Error_When_model_Type_IsNot_Object", () => {
+  let callCreateModel = () => model.createModel("testModel", []);
 
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", "string", 1);
-
-  expect(callAddProperty).toThrow(Error);
+  expect(callCreateModel).toThrow(
+    Error(
+      "The 'model' parameter of createModel(modelName, model) must be an object!"
+    )
+  );
 });
 
-test("addProperty_Should_ThrownExpection_ForObjectType_PropertyRulesInput", () => {
-  let testModel = model.createModel("test");
+test("createModel_Not_Throw_Error_When_model_Type_Is_Object", () => {
+  let callCreateModel = () => model.createModel("testModel", someModel);
 
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", "string", {});
-
-  expect(callAddProperty).toThrow(Error);
+  expect(callCreateModel).not.toThrow(
+    Error(
+      "The 'model' parameter of createModel(modelName, model) must be an object!"
+    )
+  );
 });
 
-test("addProperty_Should_ThrownExpection_ForBooleanType_PropertyRulesInput", () => {
-  let testModel = model.createModel("test");
+test("createModel_Throw_Error_When_Model_Prop_Types_IsNot_Available", () => {
+  let callCreateModel = () =>
+    model.createModel("testModel2", {
+      someProp: "inCorrectType",
+    });
 
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", "string", false);
-
-  expect(callAddProperty).toThrow(Error);
+  expect(callCreateModel).toThrow(
+    Error("inCorrectType is not of the available types!")
+  );
 });
 
-test("addProperty_Should_ThrownExpection_ForExisting_PropertyNameInput", () => {
-  let testModel = model.createModel("test");
-  testModel.addProperty("propertyName", "string", [
-    propertyRules.generalRules.required,
-  ]);
+test("createModel_Not_Throw_Error_When_Model_Prop_Types_Is_Available", () => {
+  let callCreateModel = () => model.createModel("testModel3", someModel);
 
-  let callAddProperty = () =>
-    testModel.addProperty("propertyName", "string", [
-      propertyRules.generalRules.required,
-    ]);
-
-  expect(callAddProperty).toThrow(Error(`propertyName is already exist!`));
+  expect(callCreateModel).not.toThrow(
+    Error("inCorrectType is not of the available types!")
+  );
 });
 
+test("createModel_Not_Throw_Any_Error_When_validationOfParameters_Is_True", () => {
+  let callCreateModel = () => model.createModel("testModel4", someModel);
+
+  expect(callCreateModel).not.toThrow(Error);
+});
+
+test("createModel_Created_Model_Name_Is_Entered_Value_As_Input", () => {
+  let testModel5 = model.createModel("testModel5", someModel);
+
+  expect(testModel5.modelName).toBe("testModel5");
+});
+
+test("createModel_Check_ModelManager_Is_Frozen_When_Change_Existing_Value", () => {
+  let testModel6 = model.createModel("testModel6", someModel);
+
+  testModel6.modelName = "canIChangeIt?";
+
+  expect(testModel6.modelName).toBe("testModel6");
+});
+
+test("createModel_Check_ModelManager_Is_Frozen_When_Change_Add_New_Prop", () => {
+  let testModel7 = model.createModel("testModel7", someModel);
+
+  testModel7.newProp = 1;
+
+  let doesTestModel7HaveNewProp = testModel7.hasOwnProperty("newProp");
+
+  expect(doesTestModel7HaveNewProp).toBe(false);
+});
+
+test("createModel_Check_Return_Object", () => {
+  let actualReturn = model.createModel("testModel8", someModel);
+
+  let expectedReturn = {
+    modelName: "testModel8"
+  }
+
+  expect(actualReturn).toMatchObject(expectedReturn);
+});
 //#endregion
 
-//#region validate(object, additionalContent = true, caseSensitive = false) tests
-
-test("validate_WhenAdditionalContentFalse_ShouldErrorMessageReceived", () => {
-  
-  // Arrange
-  let testModel = model.createModel("test");
-
-  testModel.addProperty("propertyName", "string", [rulesInstance.required]);
-
-  let targetObj = {
-    propertyName: "test",
-    secondProp: "additional",
-  };
-
-  let expectedResult = {
-    errorMessage: "The object contains unwanted content!",
-    isValid: false,
-  };
-
-  // Act
-  let actualResult = testModel.validate(targetObj, false);
-
-  // Assert
-  expect(actualResult).toEqual(expectedResult);
-});
+//#region validate(object, additionalContent = true, caseSensitive = false) tests 
 
 //#endregion
