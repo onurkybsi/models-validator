@@ -27,15 +27,67 @@ ModelManager.prototype.validate = function (
 };
 //#endregion
 
-//#region Validation of model parameter of createModel
+//#region Validation of parameters of createModel
+const validateCreateModelParameters = (modelName, model) => {
+  let result = {
+    errorMessage: "",
+    isValid: true,
+  };
 
-// Invoke void validation methods that throw runtime errors
-const validateModelObj = (obj) => {
-  validatePropsTypes(obj);
+  if (!validateVariableType(modelName, "string")) {
+    result.isValid = false;
+    result.errorMessage =
+      "The 'modelName' parameter of createModel(modelName, model) must be an string!";
+
+    return result;
+  }
+
+  if (!validateVariableType(model, "object")) {
+    result.isValid = false;
+    result.errorMessage =
+      "The 'model' parameter of createModel(modelName, model) must be an object!";
+
+    return result;
+  }
+
+  if (modelRepo.hasOwnProperty(modelName)) {
+    result.isValid = false;
+    result.errorMessage = `${modelName} model is already available!`;
+
+    return result;
+  }
+
+  let validationResultOfModelObj = validateModelObj(model);
+  if (!validationResultOfModelObj.isValid) return validationResultOfModelObj;
+
+  return result;
 };
 
-const validatePropsTypes = (obj) => {
-  const availableType = [
+const validateVariableType = (variable, expectedType) => {
+  if (expectedType[0] === "array") return Array.isArray(variable);
+  else if (expectedType[0] === "object")
+    return typeof variable === "object" && !Array.isArray(variable);
+  else return typeof variable === expectedType[0];
+};
+
+const validateModelObj = (obj) => {
+  let result = {
+    errorMessage: "",
+    isValid: true,
+  };
+
+  result = validateModelObjPropTypes(obj);
+
+  return result;
+};
+
+const validateModelObjPropTypes = (obj) => {
+  let result = {
+    errorMessage: "",
+    isValid: true,
+  };
+
+  const availableTypes = [
     "undefined",
     "object",
     "boolean",
@@ -49,17 +101,22 @@ const validatePropsTypes = (obj) => {
   ];
 
   for (const prop in obj) {
-    if (!availableType.includes(obj[prop])) {
-      throw Error(`${obj[prop]} is not of the available types!`);
+    if (!availableTypes.includes(obj[prop])) {
+      result.isValid = false;
+      result.errorMessage = `${obj[prop]} is not of the available types!`;
+
+      break;
     }
   }
+
+  return result;
 };
 //#endregion
 
 exports.createModel = function (modelName, model) {
-  if (typeof model === "object" && !Array.isArray(model)) {
-    validateModelObj(model);
+  let validationOfParameters = validateCreateModelParameters(modelName, model);
 
+  if (validationOfParameters.isValid) {
     modelRepo = {
       ...modelRepo,
       [modelName]: model,
@@ -69,8 +126,6 @@ exports.createModel = function (modelName, model) {
     Object.freeze(newModelManager);
     return newModelManager;
   } else {
-    throw Error(
-      "The 'model' parameter of createModel(modelName, model) must be an object!"
-    );
+    throw Error(validationOfParameters.errorMessage);
   }
 };
