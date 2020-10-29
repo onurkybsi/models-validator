@@ -97,13 +97,96 @@ test("createModel_Check_Return_Object", () => {
   let actualReturn = model.createModel("testModel8", someModel);
 
   let expectedReturn = {
-    modelName: "testModel8"
-  }
+    modelName: "testModel8",
+  };
 
   expect(actualReturn).toMatchObject(expectedReturn);
 });
 //#endregion
 
-//#region validate(object, additionalContent = true, caseSensitive = false) tests 
+//#region validate(object, additionalContent = true, caseSensitive = false) tests
+test("validate_Allow_Additional_Content_As_Default", () => {
+  let validateTestModel1 = model.createModel("validateTestModel1", someModel);
 
+  let validationResult = validateTestModel1.validate({
+    someProp: "someVal",
+    additionalProp: "additionalVal",
+  });
+
+  expect(validationResult.isValid).toBe(true);
+});
+
+test("validate_Invalid_When_additionalContent_False_And_Obj_Contain_AdditionalContent", () => {
+  let validateTestModel2 = model.createModel("validateTestModel2", someModel);
+
+  let validationResult = validateTestModel2.validate(
+    {
+      someProp: "someVal",
+      additionalProp: "additionalVal",
+    },
+    false
+  );
+
+  expect(validationResult.isValid).toBe(false);
+});
+
+test("validate_Return_Additional_Content_Error_Message_When_additionalContent_False_And_Obj_Contain_AdditionalContent", () => {
+  let validateTestModel3 = model.createModel("validateTestModel3", someModel);
+
+  let validationResult = validateTestModel3.validate(
+    {
+      someProp: "someVal",
+      additionalProp: "additionalVal",
+    },
+    false
+  );
+
+  expect(
+    validationResult.errorMessage.startsWith(
+      "These properties are unwanted : additionalProp"
+    )
+  ).toBe(true);
+});
+
+test("validate_Dont_Have_Case_Sensitivity_As_Default", () => {
+  let validateTestModel4 = model.createModel("validateTestModel4", someModel);
+
+  let validationResult = validateTestModel4.validate({
+    SOMEPROp: "someVal",
+  });
+
+  expect(validationResult.isValid).toBe(true);
+});
+
+test("validate_Invalid_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () => {
+  let validateTestModel5 = model.createModel("validateTestModel5", someModel);
+
+  let validationResult = validateTestModel5.validate(
+    {
+      SOMEPROp: "someVal",
+    },
+    false,
+    true
+  );
+
+  expect(validationResult.isValid).toBe(false);
+});
+
+test("validate_Return_Missing_Content_Error_When_CasE_Sensitivity_True_And_Exists_Case_Proplem", () => {
+  let validateTestModel6 = model.createModel("validateTestModel6", someModel);
+
+  let validationResult = validateTestModel6.validate(
+    {
+      SOMEPROp: "someVal",
+    },
+    false,
+    true
+  );
+
+  expect(
+    validationResult.errorMessage.startsWith(
+      "These properties are missing : someProp"
+    )
+  ).toBe(true);
+});
 //#endregion
