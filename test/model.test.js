@@ -172,7 +172,7 @@ test("validate_Invalid_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () =
   expect(validationResult.isValid).toBe(false);
 });
 
-test("validate_Return_Missing_Content_Error_When_CasE_Sensitivity_True_And_Exists_Case_Proplem", () => {
+test("validate_Return_Missing_Content_Error_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () => {
   let validateTestModel6 = model.createModel("validateTestModel6", someModel);
 
   let validationResult = validateTestModel6.validate(
@@ -186,6 +186,104 @@ test("validate_Return_Missing_Content_Error_When_CasE_Sensitivity_True_And_Exist
   expect(
     validationResult.errorMessage.startsWith(
       "These properties are missing : someProp"
+    )
+  ).toBe(true);
+});
+
+test("validate_Invalid_When_Missing_Content_Exits", () => {
+  let validateTestModel7 = model.createModel("validateTestModel7", someModel);
+
+  let validationResult = validateTestModel7.validate({});
+
+  expect(false).toBe(validationResult.isValid);
+});
+
+test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits", () => {
+  let validateTestModel8 = model.createModel("validateTestModel8", someModel);
+
+  let validationResult = validateTestModel8.validate({});
+
+  expect(
+    validationResult.errorMessage.startsWith(
+      "These properties are missing : someProp"
+    )
+  ).toBe(true);
+});
+
+test("validate_Invalid_When_Missing_Content_Exits_With_False_PropName_Case_In_CaseSensivity", () => {
+  let validateTestMode9 = model.createModel("validateTestMode9", someModel);
+
+  let validationResult = validateTestMode9.validate(
+    {
+      someprop: "someVal",
+    },
+    true,
+    true
+  );
+
+  expect(false).toBe(validationResult.isValid);
+});
+
+test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits_With_False_PropName_Case_In_CaseSensivity", () => {
+  let validateTestMode10 = model.createModel("validateTestMode10", someModel);
+
+  let validationResult = validateTestMode10.validate(
+    {
+      someprop: "someVal",
+    },
+    true,
+    true
+  );
+
+  expect(
+    validationResult.errorMessage.startsWith(
+      "These properties are missing : someProp"
+    )
+  ).toBe(true);
+});
+
+test("validate_Valid_When_additionalContent_True_And_It_Exists", () => {
+  let validateTestModel11 = model.createModel("validateTestModel11", someModel);
+
+  let validationResult = validateTestModel11.validate({
+    someProp: "someVal",
+    someAdditional: "additionalVal",
+  });
+
+  expect(true).toBe(validationResult.isValid);
+});
+
+test("validate_Return_No_Error_Error_When_additionalContent_True_And_It_Exists", () => {
+  let validateTestModel12 = model.createModel("validateTestModel12", someModel);
+
+  let validationResult = validateTestModel12.validate({
+    someProp: "someVal",
+    someAdditional: "additionalVal",
+  });
+
+  expect(validationResult.errorMessage === "").toBe(true);
+});
+
+test("validate_Invalid_When_PropType_Is_False", () => {
+  let validateTestModel13 = model.createModel("validateTestModel13", someModel);
+
+  let validationResult = validateTestModel13.validate({
+    someProp: 1,
+  });
+
+  expect(false).toBe(validationResult.isValid);
+});
+
+test("validate_Return_False_Type_Error_Message_When_PropType_Is_False", () => {
+  let validateTestModel14 = model.createModel("validateTestModel14", someModel);
+
+  let validationResult = validateTestModel14.validate({
+    someProp: 1,
+  });
+
+  expect(
+    validationResult.errorMessage.startsWith(
+      "Type of 'someProp' must be string"
     )
   ).toBe(true);
 });
