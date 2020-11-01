@@ -22,7 +22,9 @@ const checkPropType = function (object, model) {
 
   modelPropsLowerCase.forEach(function (prop, index) {
     if (objectTypes[objectPropsLowerCase.indexOf(prop)] !== modelTypes[index]) {
-      result.errorMessage = `Type of '${prop}' must be ${modelTypes[index]}`;
+      result.errorMessage = `Type of '${modelProps.filter(
+        (mp) => mp.toLowerCase() === prop
+      )}' must be ${modelTypes[index]}`;
       result.isValid = false;
     }
   });

@@ -1,11 +1,11 @@
-const model = require("../src/model/model");
+const modelValidator = require("../model-validator");
 const someModel = {
   someProp: "string",
 };
 
 //#region createModel(modelName, model) tests
 test("createModel_Throw_Error_When_modelName_Type_IsNot_String", () => {
-  let callCreateModel = () => model.createModel(1, someModel);
+  let callCreateModel = () => modelValidator.createModel(1, someModel);
 
   expect(callCreateModel).toThrow(
     Error(
@@ -15,7 +15,8 @@ test("createModel_Throw_Error_When_modelName_Type_IsNot_String", () => {
 });
 
 test("createModel_Not_Throw_Error_When_modelName_Type_Is_String", () => {
-  let callCreateModel = () => model.createModel("testModel", someModel);
+  let callCreateModel = () =>
+    modelValidator.createModel("testModel", someModel);
 
   expect(callCreateModel).not.toThrow(
     Error(
@@ -25,7 +26,7 @@ test("createModel_Not_Throw_Error_When_modelName_Type_Is_String", () => {
 });
 
 test("createModel_Throw_Error_When_model_Type_IsNot_Object", () => {
-  let callCreateModel = () => model.createModel("testModel", []);
+  let callCreateModel = () => modelValidator.createModel("testModel", []);
 
   expect(callCreateModel).toThrow(
     Error(
@@ -35,7 +36,8 @@ test("createModel_Throw_Error_When_model_Type_IsNot_Object", () => {
 });
 
 test("createModel_Not_Throw_Error_When_model_Type_Is_Object", () => {
-  let callCreateModel = () => model.createModel("testModel", someModel);
+  let callCreateModel = () =>
+    modelValidator.createModel("testModel", someModel);
 
   expect(callCreateModel).not.toThrow(
     Error(
@@ -46,7 +48,7 @@ test("createModel_Not_Throw_Error_When_model_Type_Is_Object", () => {
 
 test("createModel_Throw_Error_When_Model_Prop_Types_IsNot_Available", () => {
   let callCreateModel = () =>
-    model.createModel("testModel2", {
+    modelValidator.createModel("testModel2", {
       someProp: "inCorrectType",
     });
 
@@ -56,7 +58,8 @@ test("createModel_Throw_Error_When_Model_Prop_Types_IsNot_Available", () => {
 });
 
 test("createModel_Not_Throw_Error_When_Model_Prop_Types_Is_Available", () => {
-  let callCreateModel = () => model.createModel("testModel3", someModel);
+  let callCreateModel = () =>
+    modelValidator.createModel("testModel3", someModel);
 
   expect(callCreateModel).not.toThrow(
     Error("inCorrectType is not of the available types!")
@@ -64,19 +67,20 @@ test("createModel_Not_Throw_Error_When_Model_Prop_Types_Is_Available", () => {
 });
 
 test("createModel_Not_Throw_Any_Error_When_validationOfParameters_Is_True", () => {
-  let callCreateModel = () => model.createModel("testModel4", someModel);
+  let callCreateModel = () =>
+    modelValidator.createModel("testModel4", someModel);
 
   expect(callCreateModel).not.toThrow(Error);
 });
 
 test("createModel_Created_Model_Name_Is_Entered_Value_As_Input", () => {
-  let testModel5 = model.createModel("testModel5", someModel);
+  let testModel5 = modelValidator.createModel("testModel5", someModel);
 
   expect(testModel5.modelName).toBe("testModel5");
 });
 
 test("createModel_Check_ModelManager_Is_Frozen_When_Change_Existing_Value", () => {
-  let testModel6 = model.createModel("testModel6", someModel);
+  let testModel6 = modelValidator.createModel("testModel6", someModel);
 
   testModel6.modelName = "canIChangeIt?";
 
@@ -84,7 +88,7 @@ test("createModel_Check_ModelManager_Is_Frozen_When_Change_Existing_Value", () =
 });
 
 test("createModel_Check_ModelManager_Is_Frozen_When_Change_Add_New_Prop", () => {
-  let testModel7 = model.createModel("testModel7", someModel);
+  let testModel7 = modelValidator.createModel("testModel7", someModel);
 
   testModel7.newProp = 1;
 
@@ -94,7 +98,7 @@ test("createModel_Check_ModelManager_Is_Frozen_When_Change_Add_New_Prop", () => 
 });
 
 test("createModel_Check_Return_Object", () => {
-  let actualReturn = model.createModel("testModel8", someModel);
+  let actualReturn = modelValidator.createModel("testModel8", someModel);
 
   let expectedReturn = {
     modelName: "testModel8",
@@ -106,7 +110,10 @@ test("createModel_Check_Return_Object", () => {
 
 //#region validate(object, additionalContent = true, caseSensitive = false) tests
 test("validate_Allow_Additional_Content_As_Default", () => {
-  let validateTestModel1 = model.createModel("validateTestModel1", someModel);
+  let validateTestModel1 = modelValidator.createModel(
+    "validateTestModel1",
+    someModel
+  );
 
   let validationResult = validateTestModel1.validate({
     someProp: "someVal",
@@ -117,7 +124,10 @@ test("validate_Allow_Additional_Content_As_Default", () => {
 });
 
 test("validate_Invalid_When_additionalContent_False_And_Obj_Contain_AdditionalContent", () => {
-  let validateTestModel2 = model.createModel("validateTestModel2", someModel);
+  let validateTestModel2 = modelValidator.createModel(
+    "validateTestModel2",
+    someModel
+  );
 
   let validationResult = validateTestModel2.validate(
     {
@@ -131,7 +141,10 @@ test("validate_Invalid_When_additionalContent_False_And_Obj_Contain_AdditionalCo
 });
 
 test("validate_Return_Additional_Content_Error_Message_When_additionalContent_False_And_Obj_Contain_AdditionalContent", () => {
-  let validateTestModel3 = model.createModel("validateTestModel3", someModel);
+  let validateTestModel3 = modelValidator.createModel(
+    "validateTestModel3",
+    someModel
+  );
 
   let validationResult = validateTestModel3.validate(
     {
@@ -149,7 +162,10 @@ test("validate_Return_Additional_Content_Error_Message_When_additionalContent_Fa
 });
 
 test("validate_Dont_Have_Case_Sensitivity_As_Default", () => {
-  let validateTestModel4 = model.createModel("validateTestModel4", someModel);
+  let validateTestModel4 = modelValidator.createModel(
+    "validateTestModel4",
+    someModel
+  );
 
   let validationResult = validateTestModel4.validate({
     SOMEPROp: "someVal",
@@ -159,7 +175,10 @@ test("validate_Dont_Have_Case_Sensitivity_As_Default", () => {
 });
 
 test("validate_Invalid_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () => {
-  let validateTestModel5 = model.createModel("validateTestModel5", someModel);
+  let validateTestModel5 = modelValidator.createModel(
+    "validateTestModel5",
+    someModel
+  );
 
   let validationResult = validateTestModel5.validate(
     {
@@ -173,7 +192,10 @@ test("validate_Invalid_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () =
 });
 
 test("validate_Return_Missing_Content_Error_When_Case_Sensitivity_True_And_Exists_Case_Proplem", () => {
-  let validateTestModel6 = model.createModel("validateTestModel6", someModel);
+  let validateTestModel6 = modelValidator.createModel(
+    "validateTestModel6",
+    someModel
+  );
 
   let validationResult = validateTestModel6.validate(
     {
@@ -191,7 +213,10 @@ test("validate_Return_Missing_Content_Error_When_Case_Sensitivity_True_And_Exist
 });
 
 test("validate_Invalid_When_Missing_Content_Exits", () => {
-  let validateTestModel7 = model.createModel("validateTestModel7", someModel);
+  let validateTestModel7 = modelValidator.createModel(
+    "validateTestModel7",
+    someModel
+  );
 
   let validationResult = validateTestModel7.validate({});
 
@@ -199,7 +224,10 @@ test("validate_Invalid_When_Missing_Content_Exits", () => {
 });
 
 test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits", () => {
-  let validateTestModel8 = model.createModel("validateTestModel8", someModel);
+  let validateTestModel8 = modelValidator.createModel(
+    "validateTestModel8",
+    someModel
+  );
 
   let validationResult = validateTestModel8.validate({});
 
@@ -211,7 +239,10 @@ test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits", () => {
 });
 
 test("validate_Invalid_When_Missing_Content_Exits_With_False_PropName_Case_In_CaseSensivity", () => {
-  let validateTestMode9 = model.createModel("validateTestMode9", someModel);
+  let validateTestMode9 = modelValidator.createModel(
+    "validateTestMode9",
+    someModel
+  );
 
   let validationResult = validateTestMode9.validate(
     {
@@ -225,7 +256,10 @@ test("validate_Invalid_When_Missing_Content_Exits_With_False_PropName_Case_In_Ca
 });
 
 test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits_With_False_PropName_Case_In_CaseSensivity", () => {
-  let validateTestMode10 = model.createModel("validateTestMode10", someModel);
+  let validateTestMode10 = modelValidator.createModel(
+    "validateTestMode10",
+    someModel
+  );
 
   let validationResult = validateTestMode10.validate(
     {
@@ -243,7 +277,10 @@ test("validate_Return_Missing_Content_Error_When_Missing_Content_Exits_With_Fals
 });
 
 test("validate_Valid_When_additionalContent_True_And_It_Exists", () => {
-  let validateTestModel11 = model.createModel("validateTestModel11", someModel);
+  let validateTestModel11 = modelValidator.createModel(
+    "validateTestModel11",
+    someModel
+  );
 
   let validationResult = validateTestModel11.validate({
     someProp: "someVal",
@@ -254,7 +291,10 @@ test("validate_Valid_When_additionalContent_True_And_It_Exists", () => {
 });
 
 test("validate_Return_No_Error_Error_When_additionalContent_True_And_It_Exists", () => {
-  let validateTestModel12 = model.createModel("validateTestModel12", someModel);
+  let validateTestModel12 = modelValidator.createModel(
+    "validateTestModel12",
+    someModel
+  );
 
   let validationResult = validateTestModel12.validate({
     someProp: "someVal",
@@ -265,17 +305,23 @@ test("validate_Return_No_Error_Error_When_additionalContent_True_And_It_Exists",
 });
 
 test("validate_Invalid_When_PropType_Is_False", () => {
-  let validateTestModel13 = model.createModel("validateTestModel13", someModel);
+  let validateTestModel13 = modelValidator.createModel(
+    "validateTestModel13",
+    someModel
+  );
 
   let validationResult = validateTestModel13.validate({
-    someProp: 1,
+    someprop: 1,
   });
 
   expect(false).toBe(validationResult.isValid);
 });
 
 test("validate_Return_False_Type_Error_Message_When_PropType_Is_False", () => {
-  let validateTestModel14 = model.createModel("validateTestModel14", someModel);
+  let validateTestModel14 = modelValidator.createModel(
+    "validateTestModel14",
+    someModel
+  );
 
   let validationResult = validateTestModel14.validate({
     someProp: 1,
