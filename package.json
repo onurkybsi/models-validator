@@ -1,8 +1,8 @@
 {
-  "name": "model-validator",
+  "name": "models-validator",
   "version": "1.0.0",
   "description": "Provides model validation",
-  "main": "index.js",
+  "main": "models-validator.js",
   "scripts": {
     "test": "jest"
   },
