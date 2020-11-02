@@ -57,7 +57,7 @@ app.post('/api/sendEmail', function (req, res) {
 
 ```
 
-`modelsValidator.modelValidatorMiddleware(modelsWithMappedPoints)` returns 400 validation result object which has `isValid` and `errorMessage` props if validation is unsuccessful. If the validation is successful, the request is passed on to the next middleware.
+`modelsValidator.modelValidatorMiddleware(modelsWithMappedPoints)` returns validation result object which has `isValid` and `errorMessage` props with `400 Bad Request` status code if validation is unsuccessful. If the validation is successful, the request is passed on to the next middleware.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
