@@ -8,6 +8,10 @@
   },
   "author": "OnurKayabasi",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onurkybsi/models-validator.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "jest": "^25.5.4"
