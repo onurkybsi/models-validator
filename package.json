@@ -1,6 +1,6 @@
 {
   "name": "models-validator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides model validation",
   "main": "models-validator.js",
   "scripts": {
